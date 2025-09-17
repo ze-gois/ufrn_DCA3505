@@ -1,0 +1,106 @@
+\documentclass[a4paper,12pt]{report}
+
+% Basic packages for LuaLaTeX with Unicode support
+\usepackage{fontspec}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{setspace}
+
+% Hyperref configuration
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdftitle={Task 06: Remove Mapping},
+    pdfauthor={Your Name},
+    pdfsubject={Memory Management in x86},
+    pdfkeywords={paging, memory management, x86 architecture}
+}
+
+% Code listing styling
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\geometry{margin=2.5cm}
+\onehalfspacing
+
+\begin{document}
+
+\chapter{Task 06: Remove Mapping}
+
+\section{Objective}
+The goal of this task is to remove a memory mapping and observe the behavior when accessing unmapped memory. This involves:
+\begin{itemize}
+    \item Reading the content of a pointer (\texttt{ptr2}).
+    \item Removing the mapping associated with \texttt{ptr2}.
+    \item Attempting to read the content of \texttt{ptr2} again.
+    \item Documenting the expected and actual results.
+\end{itemize}
+
+\section{Implementation Plan}
+\begin{enumerate}
+    \item \textbf{Setup:} Use the existing setup from the previous task where \texttt{ptr2} is mapped. Ensure \texttt{ptr2} points to a valid memory location initially.
+    \item \textbf{Remove Mapping:} Modify the page table to remove the mapping for \texttt{ptr2}. Use the \texttt{invlpg()} function to invalidate the TLB for the unmapped address.
+    \item \textbf{Access Unmapped Memory:} Attempt to read the content of \texttt{ptr2} after the mapping is removed. Observe and document the behavior.
+    \item \textbf{Expected Results:} Accessing \texttt{ptr2} after the mapping is removed should trigger a page fault. The system should handle the page fault gracefully if an exception handler is installed.
+\end{enumerate}
+
+\section{Expected Outcome}
+\begin{itemize}
+    \item The program should demonstrate the effect of removing a mapping on memory access.
+    \item A page fault should occur when accessing \texttt{ptr2} after the mapping is removed.
+\end{itemize}
+
+\section{Code Example}
+Below is a simplified example of how the mapping removal might be implemented:
+\begin{lstlisting}[language=C, caption=Removing a Mapping]
+void remove_mapping(void *ptr) {
+    // Modify the page table to remove the mapping
+    page_table[INDEX(ptr)] = 0;
+
+    // Invalidate the TLB for the specific address
+    invlpg(ptr);
+}
+\end{lstlisting}
+
+\section{Results}
+(To be filled after implementation and testing.)
+
+\section{Challenges}
+(To be filled after implementation and testing.)
+
+\section{Conclusion}
+(To be filled after implementation and testing.)
+
+\end{document}

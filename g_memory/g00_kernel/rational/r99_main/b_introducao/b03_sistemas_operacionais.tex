@@ -1,0 +1,169 @@
+\section{Sistemas Operacionais e Gerenciamento de Memória}
+\label{sec:b03_sistemas_operacionais}
+
+Os sistemas operacionais modernos têm como um dos seus papéis fundamentais o gerenciamento eficiente da memória. Esta seção explora como os sistemas operacionais utilizam os mecanismos de hardware disponíveis na arquitetura x86 para implementar seus próprios sistemas de gerenciamento de memória.
+
+\subsection{Hierarquia de Memória}
+\label{subsec:hierarquia_memoria}
+
+Os sistemas operacionais precisam lidar com uma hierarquia complexa de memória:
+
+\begin{itemize}
+    \item \textbf{Registradores}: Gerenciados pelo compilador e não diretamente pelo SO
+    \item \textbf{Cache L1, L2, L3}: Gerenciados pelo hardware, com alguma influência do SO
+    \item \textbf{RAM}: Principal área de gerenciamento do SO
+    \item \textbf{Memória de troca (swap)}: Extensão da RAM em armazenamento secundário
+    \item \textbf{Sistemas de arquivos}: Armazenamento persistente mapeável em memória
+\end{itemize}
+
+\subsection{Abstração de Memória}
+\label{subsec:abstracao_memoria}
+
+O sistema operacional proporciona diversas abstrações de memória para os aplicativos:
+
+\begin{itemize}
+    \item \textbf{Espaço de endereçamento virtual}: Cada processo tem a ilusão de um espaço de endereçamento contíguo e privado
+
+    \item \textbf{Isolamento entre processos}: Impede que processos acessem a memória uns dos outros sem autorização explícita
+
+    \item \textbf{Memória compartilhada}: Mecanismos para compartilhamento controlado de memória entre processos
+
+    \item \textbf{Alocação dinâmica}: APIs como \texttt{malloc()} e \texttt{free()} para gerenciamento de memória em tempo de execução
+\end{itemize}
+
+\subsection{Layout da Memória do Processo}
+\label{subsec:layout_memoria}
+
+Em sistemas x86, o espaço de endereçamento de um processo tipicamente inclui:
+
+\begin{itemize}
+    \item \textbf{Segmento de texto}: Código executável, geralmente somente leitura
+
+    \item \textbf{Segmento de dados}: Variáveis globais e estáticas inicializadas
+
+    \item \textbf{Segmento BSS}: Variáveis globais e estáticas não inicializadas
+
+    \item \textbf{Heap}: Área para alocação dinâmica, gerenciada por \texttt{malloc()} e similares
+
+    \item \textbf{Mapeamentos}: Bibliotecas compartilhadas, arquivos mapeados em memória
+
+    \item \textbf{Stack}: Pilha para chamadas de função, variáveis locais e contexto
+\end{itemize}
+
+\subsection{Estratégias de Gerenciamento}
+\label{subsec:estrategias}
+
+Os sistemas operacionais implementam diversas estratégias para gerenciar a memória:
+
+\begin{itemize}
+    \item \textbf{Alocação sob demanda}: Páginas são realmente alocadas apenas quando acessadas pela primeira vez (lazy allocation)
+
+    \item \textbf{Copy-on-write (COW)}: Otimização onde páginas são compartilhadas entre processos até que um deles tente modificá-las
+
+    \item \textbf{Page replacement}: Algoritmos para decidir quais páginas mover para o swap quando a memória está cheia (LRU, Clock, etc.)
+
+    \item \textbf{Compactação de memória}: Técnicas como KSM (Kernel Samepage Merging) para identificar e fundir páginas idênticas
+\end{itemize}
+
+\subsection{Memória Virtual}
+\label{subsec:memoria_virtual}
+
+A memória virtual é a abstração central nos sistemas operacionais modernos:
+
+\begin{itemize}
+    \item \textbf{Endereçamento virtual}: Processos usam endereços virtuais, traduzidos para físicos pelo MMU
+
+    \item \textbf{Swapping}: Páginas pouco utilizadas são movidas para armazenamento secundário
+
+    \item \textbf{Overcommit}: Alocação de mais memória virtual do que a memória física disponível
+
+    \item \textbf{Memória sob demanda}: Páginas são carregadas do disco apenas quando necessárias
+\end{itemize}
+
+\subsection{Implementação de Paginação nos SOs}
+\label{subsec:impl_paginacao}
+
+Os sistemas operacionais x86 modernos implementam sofisticados sistemas de paginação:
+
+\begin{itemize}
+    \item \textbf{Tabelas de página multinível}: Linux, Windows e outros SOs usam a estrutura multinível suportada pelo hardware x86
+
+    \item \textbf{Estruturas de rastreamento}: O kernel mantém estruturas auxiliares para rastrear o estado de cada página física
+
+    \item \textbf{Page fault handler}: Rotina crítica do kernel que determina como responder a cada falha de página
+
+    \item \textbf{Compartilhamento de páginas}: Mecanismos para mapear a mesma página física em múltiplos espaços de endereçamento
+\end{itemize}
+
+\subsection{Page Fault Handler}
+\label{subsec:page_fault_handler}
+
+O tratador de falhas de página é um componente crítico do SO, que pode responder de várias formas:
+
+\begin{itemize}
+    \item \textbf{Demand paging}: Carrega uma página do disco que foi previamente swapped out
+
+    \item \textbf{Copy-on-write}: Cria uma cópia privada de uma página compartilhada quando ocorre tentativa de escrita
+
+    \item \textbf{Alocação lazy}: Aloca uma página física para um endereço virtual previamente reservado mas não alocado
+
+    \item \textbf{Stack growth}: Expande automaticamente a pilha quando necessário
+
+    \item \textbf{Erro de segmentação}: Quando o acesso é inválido, sinaliza SIGSEGV ao processo
+\end{itemize}
+
+\subsection{Serviços de Memória para Aplicações}
+\label{subsec:servicos_memoria}
+
+Sistemas operacionais fornecem APIs para gerenciamento de memória:
+
+\begin{itemize}
+    \item \textbf{POSIX}:
+    \begin{itemize}
+        \item \texttt{malloc()}, \texttt{free()}: Alocação dinâmica
+        \item \texttt{mmap()}, \texttt{munmap()}: Mapeamento de memória
+        \item \texttt{brk()}, \texttt{sbrk()}: Modificação do limite do heap
+        \item \texttt{mprotect()}: Alteração das permissões de páginas
+    \end{itemize}
+
+    \item \textbf{Windows}:
+    \begin{itemize}
+        \item \texttt{VirtualAlloc()}, \texttt{VirtualFree()}
+        \item \texttt{HeapAlloc()}, \texttt{HeapFree()}
+        \item \texttt{MapViewOfFile()}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Segurança de Memória}
+\label{subsec:seguranca_memoria}
+
+Os sistemas operacionais implementam diversas técnicas para melhorar a segurança da memória:
+
+\begin{itemize}
+    \item \textbf{ASLR (Address Space Layout Randomization)}: Randomiza a posição das regiões de memória para dificultar ataques
+
+    \item \textbf{DEP/NX (Data Execution Prevention/No-eXecute)}: Impede a execução de código em páginas de dados
+
+    \item \textbf{Stack Canaries}: Detecção de overflow de buffer na pilha
+
+    \item \textbf{KASLR (Kernel ASLR)}: Randomiza a posição do código do kernel na memória
+
+    \item \textbf{SMAP/SMEP}: Proteções para prevenir que o kernel acesse ou execute código de modo usuário inadvertidamente
+\end{itemize}
+
+\subsection{Considerações em Ambientes Baremetal}
+\label{subsec:baremetal_so}
+
+Em ambientes baremetal ou em kernels simples, o programador precisa implementar seu próprio sistema de gerenciamento de memória:
+
+\begin{itemize}
+    \item \textbf{Inicialização do hardware}: Configurar GDT, IDT, e habilitar paginação manualmente
+
+    \item \textbf{Alocação básica}: Implementar alocadores simples para gerenciar memória física
+
+    \item \textbf{Mapeamento manual}: Configurar tabelas de página diretamente, sem as abstrações de um SO completo
+
+    \item \textbf{Tratamento limitado de falhas}: Implementar tratadores básicos para falhas de página
+\end{itemize}
+
+Esta abordagem "mínima" é valiosa para compreender os mecanismos de baixo nível que normalmente são abstraídos pelos sistemas operacionais completos, e constitui um excelente exercício educacional para entender como o hardware e software interagem no gerenciamento de memória.
