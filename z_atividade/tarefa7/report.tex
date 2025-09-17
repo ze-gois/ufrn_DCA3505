@@ -1,0 +1,156 @@
+\documentclass[10pt]{article}
+\usepackage{fontspec}
+\usepackage[brazilian]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+
+\geometry{
+  a4paper,
+  margin=1.8cm
+}
+
+\lstset{
+  basicstyle=\scriptsize\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!50!black},
+  stringstyle=\color{orange},
+  breaklines=true,
+  frame=none,
+  numbers=none,
+  showstringspaces=false,
+  tabsize=2
+}
+
+\title{Tarefa 7: Algoritmo de Peterson}
+\author{}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Por que usar enter\_region e leave\_region para estabelecer uma região crítica não funciona com compiladores modernos?}
+
+Os compiladores modernos realizam diversas otimizações de código que comprometem o funcionamento do algoritmo de Peterson:
+
+\begin{itemize}
+    \item \textbf{Reordenamento de código:} Compiladores podem alterar a ordem das instruções. No algoritmo de Peterson, se \texttt{turn = process} for executado antes de \texttt{interested[process] = TRUE}, o algoritmo quebra.
+
+    \item \textbf{Cache em registradores:} Variáveis compartilhadas podem ser armazenadas em registradores. Um processo pode ler valores desatualizados em vez dos atuais na memória.
+
+    \item \textbf{Otimização de loops:} O loop de espera (\texttt{while (turn == process \&\& interested[other] == TRUE)}) pode ser otimizado porque aparentemente não faz nada.
+
+    \item \textbf{Eliminação de armazenamentos:} O compilador pode eliminar operações de memória consideradas desnecessárias.
+\end{itemize}
+
+\section{Como os problemas descritos na pergunta anterior podem ser resolvidos?}
+
+As questões de otimização do compilador podem ser resolvidas através de:
+
+\begin{itemize}
+    \item \textbf{Palavra-chave volatile:} Informa ao compilador que variáveis podem mudar inesperadamente:
+    \begin{lstlisting}
+volatile int turn;
+volatile int interested[N];
+    \end{lstlisting}
+
+    \item \textbf{Barreiras de memória:} Evitam reordenamento de instruções:
+    \begin{lstlisting}
+interested[process] = TRUE;
+__sync_synchronize(); // Barreira de compilador
+turn = process;
+    \end{lstlisting}
+
+    \item \textbf{Diretivas específicas:} Para impedir otimizações:
+    \begin{lstlisting}
+#pragma optimize("", off)
+// Código do algoritmo de Peterson
+#pragma optimize("", on)
+    \end{lstlisting}
+
+    \item \textbf{Primitivas de sincronização:} Usar mutexes do \texttt{<threads.h>} do C11 ou threads POSIX.
+\end{itemize}
+
+\section{Com os problemas dos compiladores modernos resolvidos, qual problema ainda impede que o algoritmo de Peterson funcione em processadores modernos?}
+
+Mesmo resolvendo os problemas do compilador, as arquiteturas de processadores modernos introduzem desafios:
+
+\begin{itemize}
+    \item \textbf{Ordenação de memória relaxada:} Processadores modernos não garantem consistência sequencial - as operações podem ocorrer em ordem diferente da especificada mesmo sem reordenamento do compilador.
+
+    \item \textbf{Buffers e caches:} Uma CPU pode escrever em uma variável, mas outra CPU pode não ver a alteração imediatamente devido a:
+    \begin{itemize}
+        \item Escrita intermediária em buffer
+        \item Diferentes versões em cache da memória
+    \end{itemize}
+
+    \item \textbf{Execução fora de ordem:} Processadores executam instruções fora da sequência para otimizar o desempenho.
+
+    \item \textbf{Operações não-atômicas:} Atribuições de variáveis podem não ser atômicas, especialmente para variáveis maiores.
+\end{itemize}
+
+\section{Como os problemas descritos na pergunta anterior podem ser resolvidos?}
+
+Para resolver problemas em nível de processador:
+
+\begin{itemize}
+    \item \textbf{Barreiras de memória de hardware:} Forçam ordenação correta:
+    \begin{lstlisting}
+interested[process] = TRUE;
+__atomic_thread_fence(__ATOMIC_SEQ_CST);
+turn = process;
+    \end{lstlisting}
+
+    \item \textbf{Operações atômicas:} Garantem ordenação no compilador e hardware:
+    \begin{lstlisting}
+__atomic_store_n(&interested[process], TRUE, __ATOMIC_SEQ_CST);
+__atomic_store_n(&turn, process, __ATOMIC_SEQ_CST);
+    \end{lstlisting}
+
+    \item \textbf{Atomicidade da linguagem C11:}
+    \begin{lstlisting}
+#include <stdatomic.h>
+atomic_int turn;
+atomic_int interested[N];
+    \end{lstlisting}
+
+    \item \textbf{Mecanismos de sincronização:} Mutexes (\texttt{pthread\_mutex\_t}), semáforos (\texttt{sem\_t}) ou locks de leitura-escrita (\texttt{pthread\_rwlock\_t}) são projetados para lidar com desafios de concorrência em sistemas modernos.
+\end{itemize}
+
+\section{Demonstrações Práticas e Resultados}
+
+Implementamos cinco versões do algoritmo para demonstrar os problemas e soluções:
+
+\begin{itemize}
+\item \textbf{Original:} Comportamento não-determinístico, falhas ou spinlock infinito.
+\begin{lstlisting}
+interested[process] = TRUE; turn = process;
+while (turn == process && interested[other] == TRUE);
+\end{lstlisting}
+
+\item \textbf{Sem Otimizações (\texttt{-O0}):} Nossos testes demonstraram que mesmo com otimizações completamente desativadas, o algoritmo ainda falha gravemente (contador: 19.976.974 de 20.000.000). Este resultado é crucial porque prova conclusivamente que os problemas do algoritmo de Peterson não são causados apenas por otimizações do compilador, mas fundamentalmente pelo reordenamento de memória a nível do processador.
+
+\item \textbf{Diretivas de Pragma:} Usando \texttt{\#pragma optimize("", off/on)} para desativar otimizações apenas nas funções críticas. Esta abordagem também falhou, reforçando que mesmo sem otimizações do compilador, o reordenamento a nível do processador ainda quebra o algoritmo.
+
+\item \textbf{Operações Atômicas GCC:} Usando \texttt{\_\_atomic\_store\_n} com \texttt{\_\_ATOMIC\_SEQ\_CST}.
+
+\item \textbf{Biblioteca C11:} Usando \texttt{atomic\_int} e \texttt{memory\_order\_seq\_cst}.
+
+\item \textbf{Mutex POSIX:} Substituição por \texttt{pthread\_mutex\_lock/unlock}.
+\begin{lstlisting}
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+void enter_region(int process){
+    pthread_mutex_lock(&mutex);
+}
+
+void leave_region(int process){
+    pthread_mutex_unlock(&mutex);
+}
+\end{lstlisting}
+\end{itemize}
+
+Nossos testes com 10 milhões de incrementos confirmaram: apenas as implementações com operações atômicas ou mutex funcionaram corretamente, enquanto as versões original, sem otimizações e com pragmas falharam consistentemente. Estes resultados são fundamentais porque demonstram inequivocamente que o algoritmo de Peterson, como apresentado no livro de Tanenbaum, é inadequado para sistemas modernos devido ao reordenamento de memória a nível do processador - um problema que não pode ser resolvido simplesmente desativando otimizações do compilador.
+
+\end{document}

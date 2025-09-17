@@ -1,0 +1,9 @@
+BasedOnStyle: Microsoft
+DerivePointerAlignment: false
+PointerAlignment: Left
+IndentWidth: 4
+TabWidth: 4
+SortIncludes: true
+BreakBeforeBraces: Linux
+AllowShortLoopsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse

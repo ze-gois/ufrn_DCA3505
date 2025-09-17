@@ -1,0 +1,1 @@
+Can you check DEFINITION.md? Prevent including all content of the project, the context limit is 90k and gets depleated quickly when we include everything. If possible add and remove files from context in order to provide minimal context, a summary buffer may be valid in order to get track of what is being probed.

@@ -1,0 +1,9 @@
+build/
+.vscode/
+.idea/
+.neoconf.json
+.editorconfig
+.cache/
+./**/*.aux
+./**/*.log
+./**/*.out

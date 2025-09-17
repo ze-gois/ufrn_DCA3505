@@ -1,0 +1,63 @@
+execve("/usr/bin/timeout", ["timeout", "10", "./build/ptrace-lockdep", "-a", "-c", "-t", "5", "-v", "-o", "report.txt", "119102"], 0x7fff5825f000 /* 19 vars */) = 0
+brk(NULL)                               = 0x55866d345000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=119439, ...}) = 0
+mmap(NULL, 119439, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fc0a3b99000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0px\2\0\0\0\0\0"..., 832) = 832
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 840, 64) = 840
+fstat(3, {st_mode=S_IFREG|0755, st_size=2006328, ...}) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fc0a3b97000
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 840, 64) = 840
+mmap(NULL, 2030680, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fc0a39a7000
+mmap(0x7fc0a39cb000, 1507328, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x24000) = 0x7fc0a39cb000
+mmap(0x7fc0a3b3b000, 319488, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x194000) = 0x7fc0a3b3b000
+mmap(0x7fc0a3b89000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e1000) = 0x7fc0a3b89000
+mmap(0x7fc0a3b8f000, 31832, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7fc0a3b8f000
+close(3)                                = 0
+mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fc0a39a4000
+arch_prctl(ARCH_SET_FS, 0x7fc0a39a4740) = 0
+set_tid_address(0x7fc0a39a4a10)         = 119125
+set_robust_list(0x7fc0a39a4a20, 24)     = 0
+rseq(0x7fc0a39a4680, 0x20, 0, 0x53053053) = 0
+mprotect(0x7fc0a3b89000, 16384, PROT_READ) = 0
+mprotect(0x558662441000, 4096, PROT_READ) = 0
+mprotect(0x7fc0a3bf4000, 8192, PROT_READ) = 0
+prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+munmap(0x7fc0a3b99000, 119439)          = 0
+getrandom("\x35\x2f\x1d\xda\x4b\x27\xb5\xa9", 8, GRND_NONBLOCK) = 8
+brk(NULL)                               = 0x55866d345000
+brk(0x55866d366000)                     = 0x55866d366000
+openat(AT_FDCWD, "/usr/lib/locale/locale-archive", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=3063024, ...}) = 0
+mmap(NULL, 3063024, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fc0a3600000
+close(3)                                = 0
+setpgid(0, 0)                           = 0
+rt_sigaction(SIGALRM, {sa_handler=0x55866243e210, sa_mask=[], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7fc0a39e4ef0}, NULL, 8) = 0
+rt_sigaction(SIGINT, {sa_handler=0x55866243e210, sa_mask=[], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7fc0a39e4ef0}, NULL, 8) = 0
+rt_sigaction(SIGQUIT, {sa_handler=0x55866243e210, sa_mask=[], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7fc0a39e4ef0}, NULL, 8) = 0
+rt_sigaction(SIGHUP, {sa_handler=0x55866243e210, sa_mask=[], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7fc0a39e4ef0}, NULL, 8) = 0
+rt_sigaction(SIGTERM, {sa_handler=0x55866243e210, sa_mask=[], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7fc0a39e4ef0}, NULL, 8) = 0
+rt_sigaction(SIGTERM, {sa_handler=0x55866243e210, sa_mask=[], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7fc0a39e4ef0}, NULL, 8) = 0
+rt_sigaction(SIGTTIN, {sa_handler=SIG_IGN, sa_mask=[TTIN], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7fc0a39e4ef0}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+rt_sigaction(SIGTTOU, {sa_handler=SIG_IGN, sa_mask=[TTOU], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7fc0a39e4ef0}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+rt_sigaction(SIGCHLD, {sa_handler=0x55866243af80, sa_mask=[], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7fc0a39e4ef0}, NULL, 8) = 0
+rt_sigprocmask(SIG_UNBLOCK, [CHLD], NULL, 8) = 0
+rt_sigprocmask(SIG_UNBLOCK, [ALRM], NULL, 8) = 0
+rt_sigprocmask(SIG_BLOCK, [HUP INT QUIT ALRM TERM CHLD], [], 8) = 0
+rt_sigprocmask(SIG_BLOCK, ~[], [HUP INT QUIT ALRM TERM CHLD], 8) = 0
+clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7fc0a39a4a10) = 119126
+rt_sigprocmask(SIG_SETMASK, [HUP INT QUIT ALRM TERM CHLD], NULL, 8) = 0
+timer_create(CLOCK_REALTIME, {sigev_signo=SIGALRM, sigev_notify=SIGEV_SIGNAL}, [0]) = 0
+timer_settime(0, 0, {it_interval={tv_sec=0, tv_nsec=0}, it_value={tv_sec=10, tv_nsec=1}}, NULL) = 0
+wait4(119126, 0x7fff2a8be4e8, WNOHANG, NULL) = 0
+rt_sigsuspend([], 8)                    = ? ERESTARTNOHAND (To be restarted if no handler)
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=119126, si_uid=0, si_status=0, si_utime=0, si_stime=0} ---
+rt_sigreturn({mask=[HUP INT QUIT ALRM TERM CHLD]}) = -1 EINTR (Interrupted system call)
+wait4(119126, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], WNOHANG, NULL) = 119126
+close(1)                                = 0
+close(2)                                = 0
+exit_group(0)                           = ?
++++ exited with 0 +++

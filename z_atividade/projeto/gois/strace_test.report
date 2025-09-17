@@ -1,0 +1,63 @@
+execve("./build/ptrace-lockdep", ["./build/ptrace-lockdep", "-e", "119071"], 0x7ffccc6363c0 /* 19 vars */) = 0
+brk(NULL)                               = 0x5598998b0000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=119439, ...}) = 0
+mmap(NULL, 119439, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f0ebd81c000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/libelf.so.1", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\0\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=112728, ...}) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f0ebd81a000
+mmap(NULL, 110616, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f0ebd7fe000
+mmap(0x7f0ebd801000, 77824, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x3000) = 0x7f0ebd801000
+mmap(0x7f0ebd814000, 16384, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x16000) = 0x7f0ebd814000
+mmap(0x7f0ebd818000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1a000) = 0x7f0ebd818000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0px\2\0\0\0\0\0"..., 832) = 832
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 840, 64) = 840
+fstat(3, {st_mode=S_IFREG|0755, st_size=2006328, ...}) = 0
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 840, 64) = 840
+mmap(NULL, 2030680, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f0ebd60e000
+mmap(0x7f0ebd632000, 1507328, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x24000) = 0x7f0ebd632000
+mmap(0x7f0ebd7a2000, 319488, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x194000) = 0x7f0ebd7a2000
+mmap(0x7f0ebd7f0000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e1000) = 0x7f0ebd7f0000
+mmap(0x7f0ebd7f6000, 31832, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f0ebd7f6000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/libz.so.1", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\0\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=100368, ...}) = 0
+mmap(NULL, 98320, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f0ebd5f5000
+mmap(0x7f0ebd5f8000, 57344, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x3000) = 0x7f0ebd5f8000
+mmap(0x7f0ebd606000, 24576, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x11000) = 0x7f0ebd606000
+mmap(0x7f0ebd60c000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x17000) = 0x7f0ebd60c000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/libzstd.so.1", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\0\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=935880, ...}) = 0
+mmap(NULL, 933944, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f0ebd510000
+mmap(0x7f0ebd51c000, 811008, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xc000) = 0x7f0ebd51c000
+mmap(0x7f0ebd5e2000, 69632, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xd2000) = 0x7f0ebd5e2000
+mmap(0x7f0ebd5f3000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xe3000) = 0x7f0ebd5f3000
+close(3)                                = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f0ebd50e000
+arch_prctl(ARCH_SET_FS, 0x7f0ebd50ed40) = 0
+set_tid_address(0x7f0ebd50f010)         = 119086
+set_robust_list(0x7f0ebd50f020, 24)     = 0
+rseq(0x7f0ebd50ec80, 0x20, 0, 0x53053053) = 0
+mprotect(0x7f0ebd7f0000, 16384, PROT_READ) = 0
+mprotect(0x7f0ebd5f3000, 4096, PROT_READ) = 0
+mprotect(0x7f0ebd60c000, 4096, PROT_READ) = 0
+mprotect(0x7f0ebd818000, 4096, PROT_READ) = 0
+mprotect(0x5598922d7000, 4096, PROT_READ) = 0
+mprotect(0x7f0ebd877000, 8192, PROT_READ) = 0
+prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+munmap(0x7f0ebd81c000, 119439)          = 0
+access("/proc/119071/status", R_OK)     = -1 ENOENT (No such file or directory)
+getrandom("\xd8\x67\x60\x11\x13\xee\xc4\x9a", 8, GRND_NONBLOCK) = 8
+brk(NULL)                               = 0x5598998b0000
+brk(0x5598998d1000)                     = 0x5598998d1000
+write(2, "Error: Cannot access process 119"..., 63) = 63
+exit_group(1)                           = ?
++++ exited with 1 +++
